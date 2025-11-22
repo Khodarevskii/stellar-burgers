@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getFeedsApi, getOrdersApi } from '../../utils/burger-api';
+import {
+  getFeedsApi,
+  getOrdersApi,
+  getOrderByNumberApi
+} from '../../utils/burger-api';
 import { TOrder } from '../../utils/types';
 
 export const fetchFeeds = createAsyncThunk(
@@ -10,6 +14,11 @@ export const fetchFeeds = createAsyncThunk(
 export const fetchOrders = createAsyncThunk(
   'feed/fetchOrders',
   async () => await getOrdersApi()
+);
+
+export const fetchOrderByNumber = createAsyncThunk(
+  'feed/fetchOrderByNumber',
+  async (number: number) => await getOrderByNumberApi(number)
 );
 
 interface FeedState {
@@ -59,6 +68,21 @@ const feedSlice = createSlice({
       .addCase(fetchOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch orders';
+      })
+      .addCase(fetchOrderByNumber.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchOrderByNumber.fulfilled, (state, action) => {
+        state.loading = false;
+        const order = action.payload.orders[0];
+        if (order && !state.orders.find((o) => o.number === order.number)) {
+          state.orders.push(order);
+        }
+      })
+      .addCase(fetchOrderByNumber.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch order';
       });
   }
 });
