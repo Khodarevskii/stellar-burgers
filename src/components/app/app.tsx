@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import {
   ConstructorPage,
@@ -25,54 +25,11 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state?.background;
-  const hasRedirected = useRef(false);
 
   useEffect(() => {
     dispatch(getUser());
     dispatch(fetchIngredients());
   }, [dispatch]);
-
-  // Редирект на главную с попапом при прямом переходе на /ingredients/:id
-  useEffect(() => {
-    if (
-      location.pathname.startsWith('/ingredients/') &&
-      !background &&
-      !hasRedirected.current
-    ) {
-      hasRedirected.current = true;
-      // Сохраняем текущий путь для модального окна
-      const ingredientPath = location.pathname;
-
-      // Сначала переходим на главную с фоновым состоянием
-      navigate('/', {
-        replace: true,
-        state: {
-          background: {
-            pathname: '/',
-            search: '',
-            hash: '',
-            state: null,
-            key: 'default'
-          }
-        }
-      });
-
-      // Затем в следующем тике открываем модальное окно
-      setTimeout(() => {
-        navigate(ingredientPath, {
-          state: {
-            background: {
-              pathname: '/',
-              search: '',
-              hash: '',
-              state: null,
-              key: 'default'
-            }
-          }
-        });
-      }, 0);
-    }
-  }, [location.pathname, background, navigate]);
 
   const handleModalClose = () => {
     navigate(-1);
