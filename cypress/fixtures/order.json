@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "name": "Space флюоресцентный бургер",
+  "order": {
+    "_id": "64f8a1c9a1b1c9001f8e4e1a",
+    "status": "done",
+    "name": "Space флюоресцентный бургер",
+    "createdAt": "2023-09-06T12:00:00.000Z",
+    "updatedAt": "2023-09-06T12:00:00.000Z",
+    "number": 12345,
+    "ingredients": [
+      "60d3b41abdacab0026a733c7",
+      "60d3b41abdacab0026a733c8",
+      "60d3b41abdacab0026a733cc",
+      "60d3b41abdacab0026a733c7"
+    ]
+  }
+}
