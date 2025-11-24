@@ -14,7 +14,7 @@ interface OrderState {
   orderName: string;
 }
 
-const initialState: OrderState = {
+export const initialState: OrderState = {
   order: null,
   orderRequest: false,
   error: null,
